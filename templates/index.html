@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Previsão de Ataque Cardíaco</title>
+</head>
+<body>
+    <h1>Previsão de Ataque Cardíaco</h1>
+    <form id="preverForm">
+        <form id="preverForm">
+            <div>
+              <label for="idade">Idade:</label>
+              <input type="number" id="idade" name="idade" required />
+            </div>
+            <div>
+              <label for="sexo">Sexo (1 = Masculino, 0 = Feminino):</label>
+              <input type="number" id="sexo" name="sexo" required />
+            </div>
+            <div>
+              <label for="pressao_arterial">Pressão Arterial:</label>
+              <input type="number" id="pressao_arterial" name="pressao_arterial" required />
+            </div>
+            <div>
+              <label for="colesterol">Colesterol:</label>
+              <input type="number" id="colesterol" name="colesterol" required />
+            </div>
+            <button type="submit">Prever</button>
+            <p id="resultado"></p>
+            <h2 style="display: none;" id="mais">Você tem <span>mais chances</span> de ter um ataque cardíaco.</h2>
+            <h2 style="display: none;" id="menos">Você tem <span>menos chances</span> de ter um ataque cardíaco.</h2>
+          </form>
+
+    <div id="myDiv" style="width: fit-content;"></div>
+    <div id="container" style="width:100%; height:400px;"></div>
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+
+    <script>
+        async function fetchDadosTratados() {
+            const response = await fetch('/dados_tratados');
+            const data = await response.json();
+            return data;
+        }
+
+        function plotScatterPlot(data) {
+            const x = data.map(d => d.idade);
+            const y = data.map(d => d.colesterol);
+
+            var trace = {
+                x: x,
+                y: y,
+                mode: 'markers',
+                type: 'scatter'
+            };
+
+            var layout = {
+                title: 'Idade vs Colesterol',
+                xaxis: { title: 'Idade' },
+                yaxis: { title: 'Colesterol' }
+            };
+
+            Plotly.newPlot('myDiv', [trace], layout);
+        }
+
+        async function init() {
+            const data = await fetchDadosTratados();
+            plotScatterPlot(data);
+            plotHighchartsBar(data);
+        }
+
+        init();
+
+        document.getElementById("preverForm").addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const idade = document.getElementById("idade").value;
+            const sexo = document.getElementById("sexo").value;
+            const pressao_arterial = document.getElementById("pressao_arterial").value;
+            const colesterol = document.getElementById("colesterol").value;
+
+            const response = await fetch("/prever", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    idade: Number(idade),
+                    sexo: Number(sexo),
+                    pressao_arterial: Number(pressao_arterial),
+                    colesterol: Number(colesterol),
+                }),
+            });
+
+            const mais = document.getElementById("mais");
+            const menos = document.getElementById("menos");
+            mais.style.display = "none";
+            menos.style.display = "none";
+
+            const result = await response.json();
+            if (result.previsao !== undefined) {
+                if (result.previsao === 1) {
+                    mais.style.display = "block";
+                } else {
+                    menos.style.display = "block";
+                }
+            } else {
+                document.getElementById("resultado").innerText = "Erro: " + result.erro;
+            }
+        });
+    </script>
+    <style>
+        body {
+          display: flex;
+          margin: 0 10em;
+          flex-direction: column;
+          align-items: center;
+          font-family: Arial, sans-serif;
+        }
+        form{
+          width: 30% max-content;
+          display: flex;
+          padding: 0.5em;
+          flex-direction: column;
+          gap: 0.4em;
+
+          background-color: #003785;
+        }
+        input{
+          width: 10%;
+        }
+        input:focus{
+          outline: none;
+        }
+        label, p{
+          font-weight: 600;
+          color: #fff;
+          text-align: center;
+        }
+        form div{
+          display: flex;
+          justify-content: space-between;
+        }
+        h1 {
+          color: #5454e6;
+        }
+        h2{
+          color: #fff;
+          text-align: center;
+          font-size: 1em;
+        }
+        button{
+          width: 40%;
+          align-self: center;
+          border: none;
+          border-radius: 0.6em;
+          color: #fff;
+          font-weight: 600;
+          padding: 0.6em 0.5em;
+  
+          background: #5454e6;
+        }
+        #mais span{
+          padding: 0.3em;
+          border-radius: 50%;
+          background-color: #d83b3b80;
+        }
+        #menos span{
+          padding: 0.3em;
+          border-radius: 50%;
+          background-color: #3bd83b80;
+        }
+      </style>
+</body>
+</html>
