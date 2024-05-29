@@ -1,0 +1,166 @@
+html{
+    margin: 0 2em;
+}
+body {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  gap: 5em;
+  padding: 0;
+  margin: 0;
+  font-family: Arial, sans-serif;
+
+  background-color: aliceblue;
+}
+*{
+    text-decoration: none;
+    text-align: center;
+    color: #fff;
+}
+#logo{
+    width: 2em;
+    align-self: center;
+    margin-top: 1em;
+}
+a{
+    display: flex;
+    align-items: center;
+    font-size: 0.7em;
+    gap: 0.4em;
+    padding: 0.6em;
+    margin-top: 1%;
+    border-radius: 2em;
+    flex-direction: column;
+}
+a:hover{
+    background-color: #ffffff60;
+}
+navbar{
+    display: flex;
+    position: fixed;
+    margin-left: -0.5em;
+    padding: 1em;
+    height: 88vh;
+    gap: 2em;
+    border-radius: 1.2em;
+    flex-direction: column;
+    align-self: center;
+
+    box-shadow: 0.2em 0.2em 0.3em #403C6B50;
+    background-color: #6F6AF8;
+}
+img{
+    width: 1.5em;
+}
+#previsao{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: start;
+    margin-left: 8em;
+    margin-top: 1em;
+    gap: 1em;
+    row-gap: 0.5;
+}
+form{
+  display: flex;
+  padding: 1em;
+  height: 85%;
+  border-radius: 0.8em;
+  flex-direction: column;
+  gap: 0.2em;
+  overflow: hidden;
+
+  box-shadow: 0.3em 0.3em 0.5em #403C6B80;
+  background-color: #fff;
+}
+input{
+  width: 8%;
+  color: #403C6B;
+}
+input:focus{
+  outline: none;
+}
+label{
+    font-size: 0.8em;
+}
+label, p{
+  margin: 0;
+  font-weight: 600;
+  color: #403C6B;
+  text-align: center;
+}
+form div{
+  display: flex;
+  justify-content: space-between;
+}
+h1 {
+  text-align: start;
+  grid-column: span 2;
+  font-size: 1.5em;
+  margin: 0;
+  color: #403C6B;
+}
+h2{
+  color: #403C6B;
+  text-align: center;
+  font-size: 0.72em;
+}
+button{
+  width: 40%;
+  align-self: center;
+  border: none;
+  border-radius: 0.6em;
+  color: #fff;
+  font-weight: 900;
+  padding: 0.6em 0.5em;
+
+  background: #6F6AF8;
+}
+button:hover{
+    position: relative;
+    bottom: 0.1em;
+    right: 0.1em;
+    cursor: pointer;
+
+    box-shadow: 0.2em 0.2em 0.2em #00000050;
+    background-color: #4b43a5;
+}
+#mais span{
+  padding: 0.3em;
+  border-radius: 30%;
+  background-color: #d83b3b80;
+}
+#menos span{
+  padding: 0.3em;
+  border-radius: 30%;
+  background-color: #3bd83b80;
+}
+div #graficoIdade{
+    align-self: stretch;
+    grid-row: 3;
+    padding: 1em;
+    border-radius: 0.8em;
+  
+    box-shadow: 0.3em 0.3em 0.5em #403C6B80;
+    background-color: #fff;
+}
+div #descricao{
+    align-self: stretch;
+    padding: 3em 3em;
+    font-size: 1em;
+    border-radius: 0.8em;
+    grid-row: span 3;
+  
+    box-shadow: 0.3em 0.3em 0.5em #403C6B80;
+    background-color: #fff;
+}
+
+div #pieChart{
+    align-self: stretch;
+    grid-row: 3;
+    border-radius: 0.8em;
+  
+    box-shadow: 0.3em 0.3em 0.5em #403C6B80;
+    background-color: #fff;
+}
