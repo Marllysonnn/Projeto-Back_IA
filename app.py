@@ -16,10 +16,37 @@ except Exception as e:
 
 # Supondo que o dataframe 'heart_normalizacao' seja carregado a partir de um arquivo
 heart_normalizacao = pd.read_csv('Treinamento/data/base_normalizada.csv')
+heart_data = pd.read_csv('Treinamento/data/heart.csv')
 
-@app.route('/')
-def home():
-    return render_template('index.html')
+@app.route('/heart_data')
+def get_heart_data():
+    # Filtrar os dados por sexo e ataque cardíaco
+    males = heart_data[(heart_data['sex'] == 1) & (heart_data['target'] == 1)].shape[0]
+    females = heart_data[(heart_data['sex'] == 0) & (heart_data['target'] == 1)].shape[0]
+    
+    total = males + females
+    males_percentage = (males / total) * 100
+    females_percentage = (females / total) * 100
+
+    data = {
+        'labels': ['Homens', 'Mulheres'],
+        'percentages': [males_percentage, females_percentage]
+    }
+    return jsonify(data)
+
+@app.route('/dados_idade', methods=['GET'])
+def dados_idade():
+    try:
+        # Contagem de pessoas por idade
+        contagem_idade = heart_normalizacao['idade'].value_counts().sort_index()
+        # Converter para o formato esperado pelo Chart.js
+        data = {
+            'labels': contagem_idade.index.tolist(),  # Lista de idades
+            'data': contagem_idade.values.tolist()    # Lista de contagem de pessoas
+        }
+        return jsonify(data)
+    except Exception as e:
+        return jsonify({'erro': f'Erro ao processar os dados: {e}'}), 500
 
 @app.route('/prever', methods=['POST'])
 def prever():
@@ -55,13 +82,17 @@ def prever():
     except Exception as e:
         return jsonify({'erro': f'Erro ao processar a previsão: {e}'}), 500
 
-@app.route('/dados_tratados', methods=['GET'])
-def dados_tratados():
+@app.route('/heart', methods=['GET'])
+def heart():
     try:
         data = heart_normalizacao.to_dict(orient='records')
         return jsonify(data)
     except Exception as e:
         return jsonify({'erro': f'Erro ao processar os dados: {e}'}), 500
+
+@app.route('/')
+def home():
+    return render_template('index.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
