@@ -1,0 +1,128 @@
+section {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  flex-direction: column;
+}
+#inicio {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: stretch;
+  padding: 1em;
+  margin: -1em 2em 2em 0em;
+  height: 100%;
+  gap: 1.1em;
+}
+h1 {
+  margin-left: 0.5em;
+  font-size: 2.2em;
+  font-weight: 900;
+
+  text-shadow: 0.1em 0.1em 0.1em #403c6b50;
+  color: #403c6b;
+}
+#chartpizza {
+  border-radius: 0.8em;
+  grid-row: span 2;
+  box-shadow: 0.3em 0.3em 0.1em #403c6b80;
+  background-color: #fff;
+}
+#chartbarra {
+  border-radius: 0.8em;
+
+  box-shadow: 0.3em 0.3em 0.1em #403c6b80;
+  background-color: #fff;
+}
+#chartduo {
+  border-radius: 0.8em;
+  grid-row: span 2;
+  box-shadow: 0.3em 0.3em 0.1em #403c6b80;
+  background-color: #fff;
+}
+#preverForm {
+  display: flex;
+  align-items: center;
+  border-radius: 0.8em;
+  flex-direction: column;
+
+  box-shadow: 0.3em 0.3em 0.1em #403c6b80;
+  background-color: #fff;
+}
+#preverForm input {
+  width: 8%;
+  color: #403c6b;
+}
+#preverForm input:focus {
+  outline: none;
+}
+#preverForm label {
+  font-size: 0.8em;
+}
+#preverForm div {
+  margin-top: 0.4em;
+  width: 85%;
+}
+label,
+p {
+  margin: 0;
+  font-weight: 600;
+  color: #403c6b;
+  text-align: center;
+}
+#preverForm div {
+  display: flex;
+  justify-content: space-between;
+}
+h2 {
+  color: #403c6b;
+  text-align: center;
+  font-size: 0.72em;
+}
+button {
+  width: 40%;
+  align-self: center;
+  border: none;
+  border-radius: 0.6em;
+  color: #fff;
+  font-weight: 900;
+  padding: 0.6em 0.5em;
+
+  background: #6f6af8;
+}
+button:hover {
+  position: relative;
+  bottom: 0.1em;
+  right: 0.1em;
+  cursor: pointer;
+
+  box-shadow: 0.2em 0.2em 0.2em #00000050;
+  background-color: #4b43a5;
+}
+#chartbarra div div {
+  scale: 0.95;
+  margin-top: 0.6em;
+}
+#preverForm:hover,
+#chartpizza:hover,
+#chartbarra:hover,
+#chartduo:hover {
+  transition: linear 0.4s;
+  scale: 1.025;
+  box-shadow: 0.3em 0.3em 0.6em #403c6b90;
+}
+#mais span {
+  padding: 0.6em;
+  border-radius: 45%;
+  background-color: #d83b3bd0;
+}
+#menos span {
+  padding: 0.6em;
+  border-radius: 45%;
+  background-color: #3bd83bd2;
+}
+#mais, #menos{
+  font-weight: 600;
+  position: absolute;
+  margin-top: 15em;
+  font-size: 0.8em;
+}

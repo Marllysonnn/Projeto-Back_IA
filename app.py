@@ -18,35 +18,14 @@ except Exception as e:
 heart_normalizacao = pd.read_csv('Treinamento/data/base_normalizada.csv')
 heart_data = pd.read_csv('Treinamento/data/heart.csv')
 
-@app.route('/heart_data')
-def get_heart_data():
-    # Filtrar os dados por sexo e ataque cardíaco
-    males = heart_data[(heart_data['sex'] == 1) & (heart_data['target'] == 1)].shape[0]
-    females = heart_data[(heart_data['sex'] == 0) & (heart_data['target'] == 1)].shape[0]
+@app.route('/dados_ataque_cardiaco', methods=['GET'])
+def dados_ataque_cardiaco():
+    ataque_cardiaco = heart_data[heart_data['target'] == 1]
     
-    total = males + females
-    males_percentage = (males / total) * 100
-    females_percentage = (females / total) * 100
-
-    data = {
-        'labels': ['Homens', 'Mulheres'],
-        'percentages': [males_percentage, females_percentage]
-    }
-    return jsonify(data)
-
-@app.route('/dados_idade', methods=['GET'])
-def dados_idade():
-    try:
-        # Contagem de pessoas por idade
-        contagem_idade = heart_normalizacao['idade'].value_counts().sort_index()
-        # Converter para o formato esperado pelo Chart.js
-        data = {
-            'labels': contagem_idade.index.tolist(),  # Lista de idades
-            'data': contagem_idade.values.tolist()    # Lista de contagem de pessoas
-        }
-        return jsonify(data)
-    except Exception as e:
-        return jsonify({'erro': f'Erro ao processar os dados: {e}'}), 500
+    homens = ataque_cardiaco[ataque_cardiaco['sex'] == 1].shape[0]
+    mulheres = ataque_cardiaco[ataque_cardiaco['sex'] == 0].shape[0]
+    
+    return jsonify({'Homem': homens, 'Mulher': mulheres})
 
 @app.route('/prever', methods=['POST'])
 def prever():
@@ -89,6 +68,22 @@ def heart():
         return jsonify(data)
     except Exception as e:
         return jsonify({'erro': f'Erro ao processar os dados: {e}'}), 500
+
+@app.route('/dados_histograma')
+def dados_histograma():
+    try:
+        homens_ataque = heart_data[(heart_data['sex'] == 1) & (heart_data['target'] == 1)].shape[0]
+        mulheres_ataque = heart_data[(heart_data['sex'] == 0) & (heart_data['target'] == 1)].shape[0]
+        homens_sem_ataque = heart_data[(heart_data['sex'] == 1) & (heart_data['target'] == 0)].shape[0]
+        mulheres_sem_ataque = heart_data[(heart_data['sex'] == 0) & (heart_data['target'] == 0)].shape[0]
+
+        data = [
+            {'category': 'Com ataque', 'Homens': homens_ataque, 'Mulheres': mulheres_ataque},
+            {'category': 'Sem ataque', 'Homens': homens_sem_ataque, 'Mulheres': mulheres_sem_ataque}
+        ]
+        return jsonify(data)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/')
 def home():
